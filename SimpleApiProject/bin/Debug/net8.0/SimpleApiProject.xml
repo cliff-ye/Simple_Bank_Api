@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SimpleApiProject</name>
+    </assembly>
+    <members>
+        <member name="M:SimpleApiProject.Controllers.AccountController.CreateAccount(SimpleApiProject.Dto.CreateAccDto)">
+            <summary>
+            This end point creates an account 
+            </summary>
+            <param name="createAccDto"></param>
+            <response code="200">returns the account name, account number and balance</response>
+        </member>
+        <member name="M:SimpleApiProject.Controllers.AccountController.Deposit(SimpleApiProject.Dto.DepositDto)">
+            <summary>
+            This end point is there for users put money into their account to be able to perform transfers 
+            </summary>
+            <param name="depositDto"></param>
+            <response code="200">returns the account name, account number and balance</response>
+        </member>
+        <member name="M:SimpleApiProject.Controllers.AccountController.MakeTransfer(SimpleApiProject.Dto.TransferDto)">
+            <summary>
+            This end point is used to transfer fund from one account to another 
+            </summary>
+            <param name="transferDto"></param>
+            <response code="200">returns the account name, account number and balance</response>
+        </member>
+        <member name="M:SimpleApiProject.Controllers.AccountController.GetAccBal(System.String)">
+            <summary>
+            This end point is used to retrieve user's account balance 
+            </summary>
+            <param name="accountNum"></param>
+            <response code="200">returns the account name, account number and balance</response>
+        </member>
+        <member name="M:SimpleApiProject.Controllers.TransactionController.GetAllTransactions">
+            <summary>
+            This end point returns all the transactions
+            </summary>
+            <response code="200"></response>
+        </member>
+        <member name="M:SimpleApiProject.Controllers.TransactionController.GetTransaction(System.Guid)">
+            <summary>
+            This end point returns all the transactions
+            </summary>
+            <response code="200"></response>
+        </member>
+        <member name="M:SimpleApiProject.Controllers.TransactionController.DeleteTransaction(System.Guid)">
+            <summary>
+            This end point returns all the transactions
+            </summary>
+            <response code="204"></response>
+        </member>
+        <member name="T:SimpleApiProject.Data.Migrations.InitialMigration">
+            <inheritdoc />
+        </member>
+        <member name="M:SimpleApiProject.Data.Migrations.InitialMigration.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:SimpleApiProject.Data.Migrations.InitialMigration.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:SimpleApiProject.Data.Migrations.InitialMigration.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>

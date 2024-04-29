@@ -14,12 +14,13 @@ namespace SimpleApiProject.Controllers
     {
         private readonly IUnitofWork _unitofWork;
         private IAccount _account;
-      
+        private readonly ILogger<AccountController> _logger;
 
-        public AccountController(IUnitofWork unitofwork)
+        public AccountController(IUnitofWork unitofwork,ILogger<AccountController> logger)
         {
             _unitofWork = unitofwork;
             _account = new AccountImpl(unitofwork);
+            _logger = logger;
         }
 
         /// <summary>
@@ -30,9 +31,11 @@ namespace SimpleApiProject.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpPost]
         public async Task<ActionResult<AccountDetailDto>> CreateAccount(CreateAccDto createAccDto)
         {
+            _logger.LogInformation("creating an account");
             return await _account.CreateAccount(createAccDto);
         }
 
@@ -43,9 +46,11 @@ namespace SimpleApiProject.Controllers
         /// <response code="200">returns the account name, account number and balance</response>
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpPost("deposit")]
         public async Task<ActionResult<AccountDetailDto>> Deposit(DepositDto depositDto)
         {
+            _logger.LogInformation("deposit into account");
             return await _account.Deposit(depositDto);
         }
 
@@ -58,9 +63,11 @@ namespace SimpleApiProject.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status402PaymentRequired)]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpPost("transfer")]
         public async Task<ActionResult<AccountDetailDto>> MakeTransfer(TransferDto transferDto)
         {
+            _logger.LogInformation("make transfer to other account");
             return await _account.Transfer(transferDto);
         }
 
@@ -72,9 +79,11 @@ namespace SimpleApiProject.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpGet("{accountNum}")]
         public async Task<ActionResult<AccountDetailDto>> GetAccBal(string accountNum)
         {
+            _logger.LogInformation("get account balance");
             return await _account.AccountBalEnquiry(accountNum);
         }
     }

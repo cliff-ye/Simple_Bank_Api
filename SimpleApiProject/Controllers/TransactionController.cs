@@ -13,10 +13,10 @@ namespace SimpleApiProject.Controllers
         private readonly IUnitofWork _unitofWork;
         private ITransaction _transaction;
         private readonly ILogger<TransactionController> _logger;
-        public TransactionController(IUnitofWork unitofWork, ILogger<TransactionController> logger)
+        public TransactionController(IUnitofWork unitofWork, ILogger<TransactionController> logger, ITransaction transaction)
         {
             _unitofWork = unitofWork;
-            _transaction = new TransactionImpl(unitofWork);
+            _transaction = transaction;
             _logger = logger;
 
         }

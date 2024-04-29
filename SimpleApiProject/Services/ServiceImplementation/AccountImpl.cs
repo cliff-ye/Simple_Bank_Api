@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SimpleApiProject.Data;
 using SimpleApiProject.Dto;
 using SimpleApiProject.Models;
 using SimpleApiProject.Services.ServiceInterfaces;
@@ -16,13 +17,16 @@ namespace SimpleApiProject.Services.ServiceImplementation
 
         protected DbSet<Account> _dbSet;
         private string msg = "";
-        public ITransaction _transaction;
+        private readonly ITransaction _transaction;
+        private AppDbContext _appDbContext;
 
-        public AccountImpl(IUnitofWork unitofwork)
+        public AccountImpl(ITransaction transactionService, IUnitofWork unitofwork, AppDbContext appDbContext)
         {
             _unitofwork = unitofwork;
-            _dbSet = _unitofwork.dbContext.Set<Account>();
-            _transaction = new TransactionImpl(unitofwork);
+            _appDbContext = appDbContext;
+            _dbSet = _appDbContext.Set<Account>();
+            _transaction = transactionService;
+
         }
         public async Task<ActionResult<AccountDetailDto>> CreateAccount(CreateAccDto createAccDto)
         {
@@ -63,7 +67,7 @@ namespace SimpleApiProject.Services.ServiceImplementation
             account.AccountBalance += depositDto.Amount;
 
             //update 
-            _unitofwork.dbContext.Entry(account).State = EntityState.Modified;
+            _appDbContext.Entry(account).State = EntityState.Modified;
 
             msg = "Deposited successfully";
             _transaction.LogTransaction("Deposit", depositDto.Amount, depositDto.AccNum, "success", msg);
@@ -110,7 +114,7 @@ namespace SimpleApiProject.Services.ServiceImplementation
             senderAcc.AccountBalance -= transferDto.amount;
             recipientAcc.AccountBalance += transferDto.amount;
 
-            _unitofwork.dbContext.Entry(senderAcc).State = EntityState.Modified;
+            _appDbContext.Entry(senderAcc).State = EntityState.Modified;
 
             msg = "Transferred successfully";
             _transaction.LogTransaction("Money Transfer", transferDto.amount, transferDto.recipientAccNum, "success", msg);

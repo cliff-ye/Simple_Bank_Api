@@ -16,10 +16,10 @@ namespace SimpleApiProject.Controllers
         private IAccount _account;
         private readonly ILogger<AccountController> _logger;
 
-        public AccountController(IUnitofWork unitofwork,ILogger<AccountController> logger)
+        public AccountController(IUnitofWork unitofwork, ILogger<AccountController> logger, IAccount account)
         {
             _unitofWork = unitofwork;
-            _account = new AccountImpl(unitofwork);
+            _account = account;
             _logger = logger;
         }
 

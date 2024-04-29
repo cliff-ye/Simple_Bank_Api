@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using SimpleApiProject.Data;
+using SimpleApiProject.Services.ServiceImplementation;
+using SimpleApiProject.Services.ServiceInterfaces;
 using SimpleApiProject.UnitofWork;
 using System.Reflection;
 
@@ -38,6 +40,8 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 builder.Services.AddScoped<IUnitofWork, UnitofWork>();
+builder.Services.AddScoped<IAccount, AccountImpl>();
+builder.Services.AddScoped<ITransaction, TransactionImpl>();
 
 //register db context
 builder.Services.AddDbContext<AppDbContext>(options =>

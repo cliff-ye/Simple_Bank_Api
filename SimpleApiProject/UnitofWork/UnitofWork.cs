@@ -3,21 +3,23 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using SimpleApiProject.Data;
 using SimpleApiProject.Models;
 using SimpleApiProject.Services.ServiceInterfaces;
+using System.Runtime.CompilerServices;
 
 namespace SimpleApiProject.UnitofWork
 {
     public class UnitofWork : IUnitofWork
     {
         private readonly AppDbContext _appDbContext;
+        
         public UnitofWork(AppDbContext appDbContext)
         {
             _appDbContext = appDbContext;
         }
-        public DbContext dbContext => _appDbContext;
+        //public DbContext dbContext => _appDbContext;
 
-        public IAccount accountservice { get; set; }
+        //public IAccount accountservice { get; set; }
 
-        public ITransaction transactionservice { get; set; }
+        //public ITransaction transactionservice { get; set; }
 
         public void Dispose()
         {

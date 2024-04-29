@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SimpleApiProject.Data;
 using SimpleApiProject.Models;
 using SimpleApiProject.Services.ServiceInterfaces;
 using SimpleApiProject.UnitofWork;
@@ -11,11 +12,13 @@ namespace SimpleApiProject.Services.ServiceImplementation
     {
         private readonly IUnitofWork _unitofwork;
         protected DbSet<Transaction> _dbSet;
+        private AppDbContext _appDbContext;
 
-        public TransactionImpl(IUnitofWork unitofwork)
+        public TransactionImpl(IUnitofWork unitofwork, AppDbContext appDbContext)
         {
+            _appDbContext = appDbContext;
             _unitofwork = unitofwork;
-            _dbSet = _unitofwork.dbContext.Set<Transaction>();
+            _dbSet = _appDbContext.Set<Transaction>();
         }
 
         public void LogTransaction(string transactionName, decimal transactionAmt, string receiverAccNum, string status, string reason)

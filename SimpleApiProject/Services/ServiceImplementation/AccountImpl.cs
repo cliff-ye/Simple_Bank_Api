@@ -15,12 +15,12 @@ namespace SimpleApiProject.Services.ServiceImplementation
         private readonly IUnitofWork _unitofwork;
 
         protected DbSet<Account> _dbSet;
-        private string msg="";
+        private string msg = "";
         public ITransaction _transaction;
 
         public AccountImpl(IUnitofWork unitofwork)
         {
-            _unitofwork = unitofwork;  
+            _unitofwork = unitofwork;
             _dbSet = _unitofwork.dbContext.Set<Account>();
             _transaction = new TransactionImpl(unitofwork);
         }
@@ -29,15 +29,15 @@ namespace SimpleApiProject.Services.ServiceImplementation
             if (createAccDto == null)
             {
                 return BadRequest();
-             }
+            }
 
             //check existence of account by email
             if (AccountExistsByEmail(createAccDto.Email))
             {
                 return Conflict("User already exists");
-                
+
             }
-            
+
             //map dto account
             var account = CustomMapping.CustomMap.MapDtoToAccount(createAccDto);
 
@@ -47,7 +47,7 @@ namespace SimpleApiProject.Services.ServiceImplementation
 
             _dbSet.Add(account);
             await _unitofwork.SaveChangesAsync();
-          
+
             return Ok(CustomMapping.CustomMap.MapAccountToDto(account));
         }
 
@@ -59,7 +59,7 @@ namespace SimpleApiProject.Services.ServiceImplementation
             }
 
             //get account to deposit into
-            var account = _dbSet.FirstOrDefault(x=> x.AccountNumber == depositDto.AccNum);
+            var account = _dbSet.FirstOrDefault(x => x.AccountNumber == depositDto.AccNum);
             account.AccountBalance += depositDto.Amount;
 
             //update 
@@ -82,12 +82,12 @@ namespace SimpleApiProject.Services.ServiceImplementation
 
         public async Task<ActionResult<AccountDetailDto>> Transfer(TransferDto transferDto)
         {
-            if(!AccountExistsByAccNum(transferDto.senderAccNum) || !AccountExistsByAccNum(transferDto.recipientAccNum)) 
+            if (!AccountExistsByAccNum(transferDto.senderAccNum) || !AccountExistsByAccNum(transferDto.recipientAccNum))
             {
                 return NotFound("Account does not exist");
             }
 
-            if(transferDto.amount <= 0)
+            if (transferDto.amount <= 0)
             {
                 msg = "Invalid transfer amount";
                 _transaction.LogTransaction("Money Transfer", transferDto.amount, transferDto.recipientAccNum, "failed", msg);
@@ -95,9 +95,9 @@ namespace SimpleApiProject.Services.ServiceImplementation
                 return BadRequest(msg);
             }
 
-            var senderAcc =  _dbSet.FirstOrDefault(x => x.AccountNumber == transferDto.senderAccNum);
+            var senderAcc = _dbSet.FirstOrDefault(x => x.AccountNumber == transferDto.senderAccNum);
 
-            if(senderAcc.AccountBalance < transferDto.amount)
+            if (senderAcc.AccountBalance < transferDto.amount)
             {
                 msg = "Insufficient Balance";
                 _transaction.LogTransaction("Money Transfer", transferDto.amount, transferDto.recipientAccNum, "failed", msg);
@@ -129,20 +129,22 @@ namespace SimpleApiProject.Services.ServiceImplementation
 
         public async Task<ActionResult<AccountDetailDto>> AccountBalEnquiry(string accountNum)
         {
-            if(accountNum == null)
+            if (accountNum == null)
             {
                 return BadRequest();
             }
 
-            var account =  await _dbSet.FirstOrDefaultAsync(acc => acc.AccountNumber == accountNum);
+            var account = await _dbSet.FirstOrDefaultAsync(acc => acc.AccountNumber == accountNum);
 
-            if(account == null)
+            if (account == null)
             {
                 return NotFound("account does not exist");
             }
 
             return Ok(CustomMapping.CustomMap.MapAccountToDto(account));
         }
+
+        
 
         private bool AccountExistsByEmail(string email)
         {
@@ -154,6 +156,6 @@ namespace SimpleApiProject.Services.ServiceImplementation
             return _dbSet.Any(acc => acc.AccountNumber == accountNum);
         }
 
-     
+       
     }
 }

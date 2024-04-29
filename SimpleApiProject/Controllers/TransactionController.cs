@@ -12,10 +12,13 @@ namespace SimpleApiProject.Controllers
     {
         private readonly IUnitofWork _unitofWork;
         private ITransaction _transaction;
-        public TransactionController(IUnitofWork unitofWork)
+        private readonly ILogger<TransactionController> _logger;
+        public TransactionController(IUnitofWork unitofWork, ILogger<TransactionController> logger)
         {
             _unitofWork = unitofWork;
             _transaction = new TransactionImpl(unitofWork);
+            _logger = logger;
+
         }
 
         /// <summary>
@@ -27,6 +30,7 @@ namespace SimpleApiProject.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Transaction>>> GetAllTransactions()
         {
+            _logger.LogInformation("gets all transactions");
             return await _transaction.GetAllTransactions();
         }
 
@@ -39,6 +43,8 @@ namespace SimpleApiProject.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Transaction>> GetTransaction(Guid id)
         {
+            _logger.LogInformation("gets a transaction");
+
             return await _transaction.GetTransaction(id);
         }
 
@@ -51,6 +57,8 @@ namespace SimpleApiProject.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTransaction(Guid id)
         {
+            _logger.LogInformation("deletes a transaction");
+
             return await _transaction.DeleteTransaction(id);
         }
     }

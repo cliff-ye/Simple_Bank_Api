@@ -10,5 +10,6 @@ namespace SimpleApiProject.Services.ServiceInterfaces
         public Task<ActionResult<IEnumerable<Transaction>>> GetAllTransactions();
         public Task<ActionResult<Transaction>> GetTransaction(Guid transactionId);
         public Task<IActionResult> DeleteTransaction(Guid transactionId);
+
     }
 }

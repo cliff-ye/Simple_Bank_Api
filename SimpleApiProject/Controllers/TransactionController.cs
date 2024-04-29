@@ -35,7 +35,7 @@ namespace SimpleApiProject.Controllers
         }
 
         /// <summary>
-        /// This end point returns all the transactions
+        /// This end point returns a transaction based on the transaction id
         /// </summary>
         /// <response code="200"></response>
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -49,7 +49,7 @@ namespace SimpleApiProject.Controllers
         }
 
         /// <summary>
-        /// This end point returns all the transactions
+        /// This end point deleted a transaction based on transaction id(Guid)
         /// </summary>
         /// <response code="204"></response>
         [ProducesResponseType(StatusCodes.Status404NotFound)]
